@@ -100,7 +100,7 @@ def main():
 
     probs = logits.softmax(dim=-1)
     log_probs = th.gather(probs, -1, cands.indices).squeeze().log()
-    bpw = log_probs.mean(-1).mean(-1)
+    bpw = -log_probs.mean(-1).mean(-1)
     print("bpw:", bpw, log_probs.shape)
 
     decoded_sentences = []
