@@ -96,6 +96,12 @@ def main():
 
     logits = model.get_logits(x_t)  # bsz, seqlen, vocab
     cands = th.topk(logits, k=1, dim=-1)
+    print('cands:', cands.shape)
+
+    probs = logits.softmax(dim=-1)
+    log_probs = th.gather(probs, -1, cands.indices).log()
+    bpw = log_probs.mean(-1).mean(-1)
+    print("bpw:", bpw)
 
     decoded_sentences = []
 
