@@ -16,6 +16,7 @@ from src.modeling.diffusion.nn import (
     timestep_embedding,
 )
 
+USE_BERT = 1
 
 class TransformerNetModel(nn.Module):
     """
@@ -52,10 +53,12 @@ class TransformerNetModel(nn.Module):
         super().__init__()
 
         if config is None:
-            config = AutoConfig.from_pretrained(config_name)
-            # config = AutoConfig.from_pretrained("google/electra-small-discriminator")
-            # config = AutoConfig.from_pretrained("google/electra-small-generator")
-            # config = TransfoXLConfig.from_pretrained("transfo-xl-wt103")
+            if USE_BERT:
+                config = AutoConfig.from_pretrained(config_name)
+            else:
+                # config = AutoConfig.from_pretrained("google/electra-small-discriminator")
+                config = AutoConfig.from_pretrained("google/electra-small-generator")
+                # config = TransfoXLConfig.from_pretrained("transfo-xl-wt103")
             config.hidden_dropout_prob = dropout
             # config.hidden_size = 512
 
@@ -99,9 +102,11 @@ class TransformerNetModel(nn.Module):
             del temp_bert.pooler
             self.input_transformers = temp_bert.encoder
         else:
-            self.input_transformers = BertEncoder(self.config)
-            # self.input_transformers = ElectraEncoder(self.config)
-            # self.input_transformers = TransfoXLModel(self.config)
+            if USE_BERT:
+                self.input_transformers = BertEncoder(self.config)
+            else:
+                self.input_transformers = ElectraEncoder(self.config)
+                # self.input_transformers = TransfoXLModel(self.config)
 
     def build_input_output_projections(self):
         if self.use_pretrained_embeddings:
