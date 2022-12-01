@@ -77,9 +77,9 @@ def main():
             denoised_fn=None,
             model_kwargs=model_kwargs,
             top_p=args.top_p,
-            progress=True,
+            progress=not True,
             tokenizer=tokenizer,
-            log_verbose=True
+            log_verbose=not True
         )
 
 
