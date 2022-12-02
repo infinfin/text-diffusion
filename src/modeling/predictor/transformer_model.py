@@ -1,11 +1,8 @@
 from transformers import AutoConfig
 
-# from transformers import BertEncoder
-from transformers.models.bert.modeling_bert import BertEncoder
-from transformers.models.electra.modeling_electra import ElectraEncoder
-from transformers.models.roberta.modeling_roberta import RobertaEncoder
-# from .bert import BertEncoder
-# from .electra import ElectraEncoder
+from .bert import BertEncoder
+from .electra import ElectraEncoder
+
 import torch
 
 import torch as th
@@ -57,8 +54,7 @@ class TransformerNetModel(nn.Module):
                 config = AutoConfig.from_pretrained(config_name)
             else:
                 # config = AutoConfig.from_pretrained("google/electra-small-discriminator")
-                # config = AutoConfig.from_pretrained("google/electra-small-generator")
-                config = AutoConfig.from_pretrained("roberta-base")
+                config = AutoConfig.from_pretrained("google/electra-small-generator")
             config.hidden_dropout_prob = dropout
             # config.hidden_size = 512
 
@@ -105,8 +101,7 @@ class TransformerNetModel(nn.Module):
             if USE_BERT:
                 self.input_transformers = BertEncoder(self.config)
             else:
-                # self.input_transformers = ElectraEncoder(self.config)
-                self.input_transformers = RobertaEncoder(self.config)
+                self.input_transformers = ElectraEncoder(self.config)
 
     def build_input_output_projections(self):
         if self.use_pretrained_embeddings:
