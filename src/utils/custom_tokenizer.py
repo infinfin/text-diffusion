@@ -137,8 +137,8 @@ def train_word_level_tokenizer(
     tokenizer = Tokenizer(WordLevel(unk_token="[UNK]"))
     tokenizer.normalizer = normalizers.Sequence([NFD(), Lowercase(), StripAccents()])
     tokenizer.pre_tokenizer = pre_tokenizers.Sequence(
-        [Digits(individual_digits=not True), Whitespace()]
-        # [CharDelimiterSplit(' '), CharDelimiterSplit('\n')]
+        # [Digits(individual_digits=not True), Whitespace()]
+        [CharDelimiterSplit(' '), CharDelimiterSplit('\n')]
     )
     tokenizer.post_processor = TemplateProcessing(
         single="[CLS] $A [SEP]", special_tokens=[("[CLS]", 1), ("[SEP]", 2)]
