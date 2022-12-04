@@ -137,8 +137,8 @@ def train_word_level_tokenizer(
     tokenizer = Tokenizer(WordLevel(unk_token="[UNK]"))
     tokenizer.normalizer = normalizers.Sequence([NFD(), Lowercase(), StripAccents()])
     tokenizer.pre_tokenizer = pre_tokenizers.Sequence(
-        # [Digits(individual_digits=True), Whitespace()]
-        [CharDelimiterSplit(' '), CharDelimiterSplit('\n')]
+        [Digits(individual_digits=not True), Whitespace()]
+        # [CharDelimiterSplit(' '), CharDelimiterSplit('\n')]
     )
     tokenizer.post_processor = TemplateProcessing(
         single="[CLS] $A [SEP]", special_tokens=[("[CLS]", 1), ("[SEP]", 2)]
@@ -154,7 +154,7 @@ def train_word_level_tokenizer(
     print(tokenizer.encode("the red.").ids)
 
     print(tokenizer.encode("the red.").tokens)
-    print(tokenizer.encode("v_124 d_54 . n_76 v_116 .").tokens)
+    print(tokenizer.encode("d_56 a v_92 d_26 n_40 d_8 a v_88 d_4 n_59").tokens)
 
     tokenizer.save(f"{str(pathlib.Path(path).parent)}/word-level-vocab.json")
 
